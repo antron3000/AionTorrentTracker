@@ -27,7 +27,7 @@
   <h3>
     Download Torrent
   </h3>
-  <input type="number"> Torrent Index</input> <button id="downloadButton">download</button>
+  <input type="number" > Torrent Index</input> <button id="downloadButton" onclick="download()">download</button>
 
   <label id="downloadSuccess"> </label>
 
@@ -47,6 +47,7 @@ let aiwa = aionweb3;
 var upload = web3.avm.method("upload").argTypes("String","String")
 let data = upload.encodeToHex("a","arre");
 
+let amount = 0;
 // 2. Create TX object
 txObject = {
   from: "0xa075345d0ec568d8b9edc7bb9fa1cb7c46be78f0bc2a063d332acb2f6a79132a",
@@ -65,5 +66,40 @@ aiwa.eth.sendTransaction( // I assigned aiwa = aionweb3 previously
 });
 
 }
+
+let myContract;
+let contractAddress;
+function contractSetup(){
+  contractAddress = "0x0F70ebAAaefc8D47804eFad73B21b7a1E9Ca01E902b3D51C6C66d51C98FBf2C2";
+  myContract = new web3.eth.Contract(casinoJSON.info.abiDefinition, contractAddress);
+}
+
+function download(){
+  console.log("asdfasdf")
+  // or
+  let aiwa = aionweb3;
+
+  // 1. Define Method & Encode
+  var getValue = web3.avm.method("getMagnetLink").argTypes("int")
+  let data = getValue.encodeToHex(0);
+
+  // 2. Create TX object
+  txObject = {
+    from: "0xa075345d0ec568d8b9edc7bb9fa1cb7c46be78f0bc2a063d332acb2f6a79132a",
+    to: "0x0F70ebAAaefc8D47804eFad73B21b7a1E9Ca01E902b3D51C6C66d51C98FBf2C2",
+    data: data,
+    gas: 2000000,
+    type: '0xf',
+  }
+
+  // 3. Prompt AIWA
+  aiwa.eth.sendTransaction( // I assigned aiwa = aionweb3 previously
+    txObject
+  ).then(function(txHash){
+    console.log('txHash:', txHash);
+  });
+
+  }
+
 </script>
 </html>
