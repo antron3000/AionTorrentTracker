@@ -44,7 +44,7 @@ function contractCall(){
 let aiwa = aionweb3;
 
 // 1. Define Method & Encode
-var upload = aionweb3.avm.method("upload").argTypes("string","string")
+var upload = web3.avm.method("upload").argTypes("String","String")
 let data = upload.encodeToHex("a","arre");
 
 // 2. Create TX object
