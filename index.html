@@ -3,12 +3,21 @@
 
   <!-- aion web3 avm file -->
   <script type="text/javascript" src="./src/js/web3.min.js"></script>
- 
+ <script>
+ let web3 = new Web3(new Web3.providers.HttpProvider("http://138.91.123.106:8545"));
+// let web3 = new Web3(new Web3.providers.HttpProvider("https://api.nodesmith.io/v1/aion/avmtestnet/jsonrpc?apiKey=ENTERAPIKEY"));
+
+
+
+
+
+
+ </script>
   <h3>
     Upload Torrent
   </h3>
 
-<input type="text"> magnet link</input> <button id="uploadButton">upload</button>
+<input type="text"> magnet link</input> <button id="uploadButton" onclick="test()">upload</button>
 <br>
 <label id="uploadSuccess"> </label>
 
@@ -23,4 +32,10 @@
   <label id="downloadSuccess"> </label>
 
 </body>
+
+<script>
+function test(){
+  console.log(aionweb3)
+}
+</script>
 </html>
