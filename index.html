@@ -2,7 +2,7 @@
 <body>
 
   <!-- aion web3 avm file -->
-  <script type="text/javascript" src="./src/js/web3.min.js"></script>
+<script type="text/javascript" src="./js/web3.min.js"></script>
  <script>
  let web3 = new Web3(new Web3.providers.HttpProvider("http://138.91.123.106:8545"));
 // let web3 = new Web3(new Web3.providers.HttpProvider("https://api.nodesmith.io/v1/aion/avmtestnet/jsonrpc?apiKey=ENTERAPIKEY"));
@@ -17,7 +17,7 @@
     Upload Torrent
   </h3>
 
-<input type="text"> magnet link</input> <button id="uploadButton" onclick="test()">upload</button>
+<input type="text"> magnet link</input> <button id="uploadButton" onclick="contractCall()">upload</button>
 <br>
 <label id="uploadSuccess"> </label>
 
@@ -36,6 +36,34 @@
 <script>
 function test(){
   console.log(aionweb3)
+}
+
+function contractCall(){
+
+// or
+let aiwa = aionweb3;
+
+// 1. Define Method & Encode
+var upload = aionweb3.avm.method("upload").argTypes("string","string")
+let data = upload.encodeToHex("a","arre");
+
+// 2. Create TX object
+txObject = {
+  from: "0xa075345d0ec568d8b9edc7bb9fa1cb7c46be78f0bc2a063d332acb2f6a79132a",
+  to: "0x0F70ebAAaefc8D47804eFad73B21b7a1E9Ca01E902b3D51C6C66d51C98FBf2C2",
+  data: data,
+  gas: 2000000,
+  type: '0xf',
+  value: web3.utils.toNAmp(amount.toString())
+}
+
+// 3. Prompt AIWA
+aiwa.eth.sendTransaction( // I assigned aiwa = aionweb3 previously
+  txObject
+).then(function(txHash){
+  console.log('txHash:', txHash);
+});
+
 }
 </script>
 </html>
