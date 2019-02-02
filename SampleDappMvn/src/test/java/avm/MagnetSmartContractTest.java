@@ -37,7 +37,7 @@ public class MagnetSmartContractTest {
         // 1- get the Dapp byes to be used for the deploy transaction
         // 2- deploy the Dapp and get the address.
 //        byte[] dapp = avmRule.getDappBytes(MagnetSmartContract.class, null, AionMap.class);
-        byte[] dapp = avmRule.getDappBytes(MagnetSmartContract.class, null, AionMap.class, AionList.class);
+        byte[] dapp = avmRule.getDappBytes(MagnetSmartContract.class, null, AionMap.class, AionList.class, DiffUtils.class);
         AvmRule.ResultWrapper resultWrapper = avmRule.deploy(from, BigInteger.ZERO, dapp);
         dappAddr = resultWrapper.getDappAddress();
     }
@@ -84,6 +84,33 @@ public class MagnetSmartContractTest {
         //read the data sent from the contract
         assertEquals("val1", result.getDecodedReturnData());*/
     }
+
+    @Test
+    public void testSearch() {
+        // interaction with map
+        //create a new account with initial balance to send the transaction
+        Address sender = avmRule.getRandomAddress(BigInteger.valueOf(10_000_000L));
+
+        byte[] txData = ABIEncoder.encodeMethodArguments("upload", "sdds", "magnet:?xt=urn:btih:3d381affbf1425ca6d03cb499941dae1ca73ba54&dn=KMSpico+12.3.24+FINAL+%2B+Portable+%28Office+and+Windows+10+Activato&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Fzer0day.ch%3A1337&tr=udp%3A%2F%2Fopen.demonii.com%3A1337&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Fexodus.desync.com%3A6969");
+        ResultCode status = avmRule.call(sender, dappAddr, BigInteger.ZERO, txData).getReceiptStatus();
+        //check transaction is successful
+        Assert.assertTrue(status.isSuccess());
+
+        txData = ABIEncoder.encodeMethodArguments("upload", "abcd", "magnet:?xt=urn:btih:3d381affbf1425ca6d03cb499941dae1ca73ba54&dn=KMSpico+12.3.24+FINAL+%2B+Portable+%28Office+and+Windows+10+Activato&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Fzer0day.ch%3A1337&tr=udp%3A%2F%2Fopen.demonii.com%3A1337&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Fexodus.desync.com%3A6969");
+        status = avmRule.call(sender, dappAddr, BigInteger.ZERO, txData).getReceiptStatus();
+        //check transaction is successful
+        Assert.assertTrue(status.isSuccess());
+
+        txData = ABIEncoder.encodeMethodArguments("search", "sddsa");
+        AvmRule.ResultWrapper result = avmRule.call(from, dappAddr, BigInteger.ZERO, txData);
+
+        status = result.getReceiptStatus();
+        Assert.assertTrue(status.isSuccess());
+
+        System.out.println(((String[])result.getDecodedReturnData())[0]);
+
+    }
+
 
     /*@Test
     public void testLogEvent() {
