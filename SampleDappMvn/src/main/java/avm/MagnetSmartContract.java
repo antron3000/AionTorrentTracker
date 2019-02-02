@@ -18,18 +18,18 @@ public class MagnetSmartContract {
     }
 
     public static void upload(String displayName, String magnetLink) {
-
+        AionList list = null;
         indexMagnetLinkMap.put(index, magnetLink);
 
         if(displayNameIndexesMap.containsKey(displayName)) {
             //key exists hence append to List
-            AionList list = displayNameIndexesMap.get(displayName);
+            list = displayNameIndexesMap.get(displayName);
             list.add(index);
             displayNameIndexesMap.put(displayName, list);
         }
         else {
             //add new List object
-            AionList list = new AionList();
+            list = new AionList();
             list.add(index);
             displayNameIndexesMap.put(displayName, list);
         }
@@ -68,6 +68,27 @@ public class MagnetSmartContract {
     }
 
     public static String getLinkByIndex(int index) {
+        return indexMagnetLinkMap.get(index);
+    }
+
+
+    // FOR TESTING ONLY - DOES NOT WORK
+    /*public static int[] getIndexes(String displayName) {
+
+        AionList<Integer> list = displayNameIndexesMap.get(displayName);
+        int[] array = list.stream().mapToInt(i->i).toArray();
+        return array;
+    }*/
+
+    // FOR TESTING ONLY
+    public static int getIndex(String displayName) {
+
+        AionList<Integer> list = displayNameIndexesMap.get(displayName);
+        return  list.get(1);
+    }
+
+    // FOR TESTING ONLY
+    public static String getMagnetLink(int index) {
         return indexMagnetLinkMap.get(index);
     }
 
