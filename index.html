@@ -13,11 +13,20 @@
 
 
  </script>
-  <h3>
-    Upload Torrent
-  </h3>
 
-<input type="text"> magnet link</input> <button id="uploadButton" onclick="contractCall()">upload</button>
+
+
+<h3>
+  Upload Torrent
+</h3>
+
+<form id='input-form'>
+	<input type="text" id='display-name' placeholder="Please Enter the Link Name" required />
+	<input type="email" id='magnet-link' placeholder="Please Enter ythe Magnet Link" required />
+	<input type="submit" id='torrent-upload-button' onclick="upload()" />
+</form>
+
+
 <br>
 <label id="uploadSuccess"> </label>
 
@@ -38,14 +47,20 @@ function test(){
   console.log(aionweb3)
 }
 
-function contractCall(){
+function upload(){
 
 // or
 let aiwa = aionweb3;
 
 // 1. Define Method & Encode
 var upload = web3.avm.method("upload").argTypes("String","String")
-let data = upload.encodeToHex("a","arre");
+
+
+var displayName = document.forms['input-form'].elements['display-name'].value;
+var magLink = document.forms['input-form'].elements['magnet-link'].value;
+
+
+let data = upload.encodeToHex(displayName, magLink);
 
 let amount = 0;
 // 2. Create TX object
