@@ -4,7 +4,7 @@
   <!-- aion web3 avm file -->
 <script type="text/javascript" src="./js/web3.min.js"></script>
  <script>
- let web3 = new Web3(new Web3.providers.HttpProvider("http://138.91.123.106:8545"));
+ let web3 = new Web3(new Web3.providers.HttpProvider("http://35.245.69.208:8545"));
 // let web3 = new Web3(new Web3.providers.HttpProvider("https://api.nodesmith.io/v1/aion/avmtestnet/jsonrpc?apiKey=ENTERAPIKEY"));
 
 
@@ -75,29 +75,26 @@ function contractSetup(){
 }
 
 function download(){
-  console.log("asdfasdf")
   // or
+  console.log("fasfasdfasf")
   let aiwa = aionweb3;
 
   // 1. Define Method & Encode
   var getValue = web3.avm.method("getMagnetLink").argTypes("int")
-  let data = getValue.encodeToHex(0);
+  let _data = getValue.encodeToHex(0);
 
-  // 2. Create TX object
-  txObject = {
-    from: "0xa075345d0ec568d8b9edc7bb9fa1cb7c46be78f0bc2a063d332acb2f6a79132a",
-    to: "0x0F70ebAAaefc8D47804eFad73B21b7a1E9Ca01E902b3D51C6C66d51C98FBf2C2",
-    data: data,
-    gas: 2000000,
-    type: '0xf',
-  }
-
-  // 3. Prompt AIWA
-  aiwa.eth.sendTransaction( // I assigned aiwa = aionweb3 previously
-    txObject
-  ).then(function(txHash){
-    console.log('txHash:', txHash);
+  var result = web3.eth.call({
+      to: "0x0F70ebAAaefc8D47804eFad73B21b7a1E9Ca01E902b3D51C6C66d51C98FBf2C2", // contract address
+      data: _data
   });
+
+  result.then(function(value){
+    value = web3.avm.decodeOneObjectFromHex(value);
+
+    console.log(value);
+  })
+
+
 
   }
 
