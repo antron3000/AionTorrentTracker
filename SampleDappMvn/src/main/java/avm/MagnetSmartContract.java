@@ -12,7 +12,7 @@ public class MagnetSmartContract {
 
     private static AionMap<String, AionList<Integer>> displayNameIndexesMap = new AionMap<>();
     private static AionMap<Integer, String> indexMagnetLinkMap = new AionMap<>();
-    private static AionList<Bounty> bountyList = new AionList<>();
+    //private static AionList<Bounty> bountyList = new AionList<>();
     private static int index = 0;
     private static double MIN_MATCH = 0.5;
 
@@ -69,7 +69,7 @@ public class MagnetSmartContract {
 
         return toReturn;
     }
-
+/*
     public static void createBounty(String Name){
         //add bounty to bounty list
         //send Aion to the contract
@@ -104,7 +104,7 @@ public class MagnetSmartContract {
     public static String getLinkByIndex(int index) {
         return indexMagnetLinkMap.get(index);
     }
-
+*/
 //    public static String[] getAllLinks() {
 //        indexMagnetLinkMap.v
 //    }

@@ -1,5 +1,5 @@
 <html>
-<body>
+<body onload="setTimeout(test, 1000);">
 
   <!-- aion web3 avm file -->
 <script type="text/javascript" src="./js/web3.min.js"></script>
@@ -26,7 +26,7 @@
 
 <form id='input-form'>
 	<input type="text" id='display-name' placeholder="Please Enter the Link Name" required />
-	<input type="email" id='magnet-link' placeholder="Please Enter ythe Magnet Link" required />
+	<input type="email" id='magnet-link' placeholder="Please Enter your Magnet Link" required />
 	<input type="submit" id='torrent-upload-button' onclick="upload()" />
 </form>
 
@@ -52,15 +52,6 @@
 
   <br>
 
-  <table id="magnetsTable">
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Link</th>
-    </tr>
-  </table>
-
-
   <hr>
     <h3>
       Create Bounty
@@ -68,9 +59,24 @@
       <input type="text"> name </input><input type="number"> amount </input> <button> Create Bounty</button>
     <hr>
 
+    <table id="submissionsTable">
+       <caption>Monthly savings</caption>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Link</th>
+      </tr>
+    </table>
+
+    <br>
+
+    <input type="number" id="bounty-index"> Submission Index</input> <button id="submitButton" onclick="test()">validate</button>
+
     <h3>
       fulfill Bounty
     </h3>
+
+    <input type="number" id="bounty-index"> Bounty Index</input> <button id="submitButton" onclick="download()">submit</button>
 
     <table id="bountiesTable">
       <tr>
@@ -198,19 +204,17 @@ async function updateMagnetTable(){
   var numLoans = await uCollateralContract.numLoans();
 
   for (i=0;i<numLoans;i++){
-      var magnet = ;
+      var magnet = 1;
 
-      var magnetName =
-      var magnetDescription = ;
-      var magnetLink = ;
+      var magnetName = 1;
+      var magnetDescription = 1;
+      var magnetLink = "1";
 
       var table = document.getElementById("magnetsTable");
       var row = table.insertRow(i+1);
       var cell1 = row.insertCell(0);
       var cell2 = row.insertCell(1);
       var cell3 = row.insertCell(2);
-
-
 
       cell1.innerHTML = LoanAddress;
       cell2.innerHTML = LoanInfo['totalContribution']/(10**8);
@@ -222,11 +226,11 @@ async function updateMagnetTable(){
 
 async function updateBountyTable(){
   for (i=0;i<numLoans;i++){
-      var bounty = ;
+      var bounty = 1;
 
-      var bountyName =
-      var bountyIssuer = ;
-      var bountyAmount = ;
+      var bountyName = 1;
+      var bountyIssuer = 1;
+      var bountyAmount = 1;
 
       var table = document.getElementById("magnetsTable");
       var row = table.insertRow(i+1);
