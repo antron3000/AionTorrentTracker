@@ -6,12 +6,6 @@
  <script>
  let web3 = new Web3(new Web3.providers.HttpProvider("http://35.245.69.208:8545"));
 // let web3 = new Web3(new Web3.providers.HttpProvider("https://api.nodesmith.io/v1/aion/avmtestnet/jsonrpc?apiKey=ENTERAPIKEY"));
-
-
-
-
-
-
  </script>
 
 
@@ -33,9 +27,15 @@
 <br>
 <label id="uploadSuccess"> </label>
 
+<hr>
+  <h3>
+    Search Torrent Database
+  </h3>
+
+  <input type="text" id="torrent-search"> Name </input> <button id="searchButton" onclick="search()">search</button>
+</hr>
 
 <hr>
-
   <h3>
     Download Torrent
   </h3>
@@ -115,10 +115,40 @@ function download(){
 
     window.open(value, 'magnetframe')
   })
+}
 
+function search() {
+    let aiwa = aionweb3;
 
+      // 1. Define Method & Encode
+    var getValue = web3.avm.method("search").argTypes("String")
+
+    console.log("----------")
+    console.log(document.getElementById("torrent-search").value)
+
+    let _data = getValue.encodeToHex(document.getElementById("torrent-search").value)
+
+    console.log(_data)
+    console.log("------------")
+
+    var result = web3.eth.call({
+      to: "0x0F70ebAAaefc8D47804eFad73B21b7a1E9Ca01E902b3D51C6C66d51C98FBf2C2", // contract address
+      data: _data
+    });
+
+  result.then(function(value){
+
+    console.log(value)
+
+    value = web3.avm.decodeOneObjectFromHex(value);
+
+    console.log(value);
+
+    // window.open(value, 'magnetframe')
+  })
 
   }
+
 
 </script>
 </html>
