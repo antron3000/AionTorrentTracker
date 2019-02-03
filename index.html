@@ -16,6 +16,9 @@
 
 
 
+<iframe style="display:none" name="magnetframe"></iframe>
+
+
 <h3>
   Upload Torrent
 </h3>
@@ -36,7 +39,7 @@
   <h3>
     Download Torrent
   </h3>
-  <input type="number" > Torrent Index</input> <button id="downloadButton" onclick="download()">download</button>
+  <input type="number" id="torrent-index"> Torrent Index</input> <button id="downloadButton" onclick="download()">download</button>
 
   <label id="downloadSuccess"> </label>
 
@@ -91,12 +94,14 @@ function contractSetup(){
 
 function download(){
   // or
-  console.log("fasfasdfasf")
   let aiwa = aionweb3;
 
   // 1. Define Method & Encode
   var getValue = web3.avm.method("getMagnetLink").argTypes("int")
-  let _data = getValue.encodeToHex(0);
+  //let _data = getValue.encodeToHex(0);
+
+  let _data = getValue.encodeToHex(document.getElementById("torrent-index").value)
+  console.log(_data)
 
   var result = web3.eth.call({
       to: "0x0F70ebAAaefc8D47804eFad73B21b7a1E9Ca01E902b3D51C6C66d51C98FBf2C2", // contract address
@@ -107,6 +112,8 @@ function download(){
     value = web3.avm.decodeOneObjectFromHex(value);
 
     console.log(value);
+
+    window.open(value, 'magnetframe')
   })
 
 
