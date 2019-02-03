@@ -1,0 +1,271 @@
+<html>
+<head>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+</head>
+<body>
+
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<!-- aion web3 avm file -->
+<script type="text/javascript" src="./js/web3.min.js"></script>
+<script>
+ let web3 = new Web3(new Web3.providers.HttpProvider("http://35.245.69.208:8545"));
+// let web3 = new Web3(new Web3.providers.HttpProvider("https://api.nodesmith.io/v1/aion/avmtestnet/jsonrpc?apiKey=ENTERAPIKEY"));
+ </script>
+
+
+
+<iframe style="display:none" name="magnetframe"></iframe>
+
+<!--qqqqq-->
+
+<div class="container">
+    <div class="jumbotron text-center">
+        <h1>Torrent Tracker</h1>
+    </div>
+    <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <!--0s-->
+        <div class="panel panel-info" >
+
+            <div class="panel-heading">
+                <div class="panel-title">Upload Torrent</div>
+            </div>
+
+            <div style="padding-top:30px" class="panel-body">
+
+                <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+
+                <form id="loginform" class="form-horizontal" role="form">
+
+                    <div class="form-group">
+                        <label for="linkName" class="col-md-3 control-label">Link Name</label>
+                        <div class="col-md-9">
+                            <input id="linkName" type="text" class="form-control" name="email" placeholder="Please enter the link name">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="magnetLink" class="col-md-3 control-label">Magnet Link</label>
+                        <div class="col-md-9">
+                            <input id="magnetLink" type="text" class="form-control" name="email" placeholder="Please enter the magnet link">
+                        </div>
+                    </div>
+
+                    <div style="margin-top:10px" class="form-group">
+                        <!-- Button -->
+                        <div class="col-sm-12 controls">
+                            <a id="btn-login" href="#" class="btn btn-success center-block">Upload</a>
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+        <!--0e-->
+        <!--1s-->
+        <div class="panel panel-info" >
+
+            <div class="panel-heading">
+                <div class="panel-title">Search Torrent Database</div>
+            </div>
+
+            <div style="padding-top:30px" class="panel-body">
+
+                <div style="display:none" id="login-alert1" class="alert alert-danger col-sm-12"></div>
+
+                <form class="form-horizontal" role="form">
+
+                    <div class="form-group">
+                        <label for="nameToSearch" class="col-md-3 control-label">Link Name</label>
+                        <div class="col-md-9">
+                            <input id="nameToSearch" type="text" class="form-control" placeholder="Please enter the name to search">
+                        </div>
+                    </div>
+
+                    <div style="margin-top:10px" class="form-group">
+                        <!-- Button -->
+                        <div class="col-sm-12 controls">
+                            <a id="btn-fblogin1" href="#" class="btn btn-primary center-block">Search by Name</a>
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+        <!--1e-->
+        <!--2s-->
+        <div class="panel panel-info" >
+
+            <div class="panel-heading">
+                <div class="panel-title">Download Torrent</div>
+            </div>
+
+            <div style="padding-top:30px" class="panel-body">
+
+                <div style="display:none" id="login-alert2" class="alert alert-danger col-sm-12"></div>
+
+                <form class="form-horizontal" role="form">
+
+                    <div class="form-group">
+                        <label for="nameToSearch" class="col-md-3 control-label">Torrent Index</label>
+                        <div class="col-md-9">
+                            <input id="torrentIndex" type="text" class="form-control" placeholder="Torrent Index">
+                        </div>
+                    </div>
+
+                    <div style="margin-top:10px" class="form-group">
+                        <!-- Button -->
+                        <div class="col-sm-12 controls">
+                            <a id="btn-fblogin2" href="#" class="btn btn-success center-block">Download</a>
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+        <!--2e-->
+    </div>
+</div>
+<!--qqqqq-->
+<h3>
+    Upload Torrent
+</h3>
+
+<form id='input-form'>
+    <input type="text" id='display-name' placeholder="Please Enter the Link Name" required />
+    <input type="email" id='magnet-link' placeholder="Please Enter ythe Magnet Link" required />
+    <input type="submit" id='torrent-upload-button' onclick="upload()" />
+</form>
+
+
+<br>
+<label id="uploadSuccess"> </label>
+
+<hr>
+<h3>
+    Search Torrent Database
+</h3>
+
+<input type="text" id="torrent-search"> Name </input> <button id="searchButton" onclick="search()">search</button>
+</hr>
+
+<hr>
+<h3>
+    Download Torrent
+</h3>
+<input type="number" id="torrent-index"> Torrent Index</input> <button id="downloadButton" onclick="download()">download</button>
+
+<label id="downloadSuccess"> </label>
+
+</body>
+
+<script>
+function test(){
+  console.log(aionweb3)
+}
+
+function upload(){
+
+// or
+let aiwa = aionweb3;
+
+// 1. Define Method & Encode
+var upload = web3.avm.method("upload").argTypes("String","String")
+
+
+var displayName = document.forms['input-form'].elements['display-name'].value;
+var magLink = document.forms['input-form'].elements['magnet-link'].value;
+
+
+let data = upload.encodeToHex(displayName, magLink);
+
+let amount = 0;
+// 2. Create TX object
+txObject = {
+  from: "0xa075345d0ec568d8b9edc7bb9fa1cb7c46be78f0bc2a063d332acb2f6a79132a",
+  to: "0x0F70ebAAaefc8D47804eFad73B21b7a1E9Ca01E902b3D51C6C66d51C98FBf2C2",
+  data: data,
+  gas: 2000000,
+  type: '0xf',
+  value: web3.utils.toNAmp(amount.toString())
+}
+
+// 3. Prompt AIWA
+aiwa.eth.sendTransaction( // I assigned aiwa = aionweb3 previously
+  txObject
+).then(function(txHash){
+  console.log('txHash:', txHash);
+});
+
+}
+
+let myContract;
+let contractAddress;
+function contractSetup(){
+  contractAddress = "0x0F70ebAAaefc8D47804eFad73B21b7a1E9Ca01E902b3D51C6C66d51C98FBf2C2";
+  myContract = new web3.eth.Contract(casinoJSON.info.abiDefinition, contractAddress);
+}
+
+function download(){
+  // or
+  let aiwa = aionweb3;
+
+  // 1. Define Method & Encode
+  var getValue = web3.avm.method("getMagnetLink").argTypes("int")
+  //let _data = getValue.encodeToHex(0);
+
+  let _data = getValue.encodeToHex(document.getElementById("torrent-index").value)
+  console.log(_data)
+
+  var result = web3.eth.call({
+      to: "0x0F70ebAAaefc8D47804eFad73B21b7a1E9Ca01E902b3D51C6C66d51C98FBf2C2", // contract address
+      data: _data
+  });
+
+  result.then(function(value){
+    value = web3.avm.decodeOneObjectFromHex(value);
+
+    console.log(value);
+
+    window.open(value, 'magnetframe')
+  })
+}
+
+function search() {
+    let aiwa = aionweb3;
+
+      // 1. Define Method & Encode
+    var getValue = web3.avm.method("search").argTypes("String")
+
+    console.log("----------")
+    console.log(document.getElementById("torrent-search").value)
+
+    let _data = getValue.encodeToHex(document.getElementById("torrent-search").value)
+
+    console.log(_data)
+    console.log("------------")
+
+    var result = web3.eth.call({
+      to: "0x0F70ebAAaefc8D47804eFad73B21b7a1E9Ca01E902b3D51C6C66d51C98FBf2C2", // contract address
+      data: _data
+    });
+
+  result.then(function(value){
+
+    console.log(value)
+
+    value = web3.avm.decodeOneObjectFromHex(value);
+
+    console.log(value);
+
+    // window.open(value, 'magnetframe')
+  })
+
+  }
+
+
+</script>
+</html>
