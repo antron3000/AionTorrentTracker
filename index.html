@@ -70,7 +70,7 @@
 
     <br>
 
-    <input type="number" id="bounty-index"> Submission Index</input> <button id="submitButton" onclick="test()">validate</button>
+    <input type="number" id="bounty-index"> Submission Index</input> <button id="submitButton" onclick=" updateMagnetTable()">validate</button>
 
     <h3>
       fulfill Bounty
@@ -96,7 +96,6 @@
 function test(){
   console.log(aionweb3)
   contractSetup();
-  updateMagnetTable();
 }
 
 function upload(){
@@ -180,7 +179,7 @@ function search() {
     console.log("------------")
 
     var result = web3.eth.call({
-      to: "0x0F71Cde342Ce51F831a7b7BDf4327fC5A2eEffC35100DC61C0E6fBFd1e314b24", // contract address
+      to: "myContract", // contract address
       data: _data
     });
 
@@ -207,7 +206,7 @@ function updateMagnetTable(){
   var getValue = web3.avm.method("getListSize").argTypes()
   //let _data = getValue.encodeToHex(0);
 
-  let _data = getValue.encodeToHex("")
+  let _data = getValue.encodeToHex()
   console.log(_data)
 
   var result = web3.eth.call({
