@@ -60,7 +60,7 @@
     <hr>
 
     <table id="submissionsTable">
-       <caption>Monthly savings</caption>
+       <caption></caption>
       <tr>
         <th>Name</th>
         <th>Description</th>
@@ -95,6 +95,8 @@
 <script>
 function test(){
   console.log(aionweb3)
+  contractSetup();
+  updateMagnetTable();
 }
 
 function upload(){
@@ -116,7 +118,7 @@ let amount = 0;
 // 2. Create TX object
 txObject = {
   from: "0xa075345d0ec568d8b9edc7bb9fa1cb7c46be78f0bc2a063d332acb2f6a79132a",
-  to: "0x0F70ebAAaefc8D47804eFad73B21b7a1E9Ca01E902b3D51C6C66d51C98FBf2C2",
+  to: contractAddress,
   data: data,
   gas: 2000000,
   type: '0xf',
@@ -135,8 +137,7 @@ aiwa.eth.sendTransaction( // I assigned aiwa = aionweb3 previously
 let myContract;
 let contractAddress;
 function contractSetup(){
-  contractAddress = "0x0F70ebAAaefc8D47804eFad73B21b7a1E9Ca01E902b3D51C6C66d51C98FBf2C2";
-  myContract = new web3.eth.Contract(casinoJSON.info.abiDefinition, contractAddress);
+  contractAddress = "0x0F5b2A492A04e4e7421FDEb6933925c5A25f16ac80b28C4a9Aa4e0bc1e885a4B";
 }
 
 function download(){
@@ -151,7 +152,7 @@ function download(){
   console.log(_data)
 
   var result = web3.eth.call({
-      to: "0x0F70ebAAaefc8D47804eFad73B21b7a1E9Ca01E902b3D51C6C66d51C98FBf2C2", // contract address
+      to: contractAddress, // contract address
       data: _data
   });
 
@@ -179,7 +180,7 @@ function search() {
     console.log("------------")
 
     var result = web3.eth.call({
-      to: "0x0F70ebAAaefc8D47804eFad73B21b7a1E9Ca01E902b3D51C6C66d51C98FBf2C2", // contract address
+      to: "0x0F71Cde342Ce51F831a7b7BDf4327fC5A2eEffC35100DC61C0E6fBFd1e314b24", // contract address
       data: _data
     });
 
@@ -199,9 +200,28 @@ function search() {
 
 <script>
 
-async function updateMagnetTable(){
+function updateMagnetTable(){
 
-  var numLoans = await uCollateralContract.numLoans();
+  var numMagnets = 1;
+
+  var getValue = web3.avm.method("getListSize").argTypes()
+  //let _data = getValue.encodeToHex(0);
+
+  let _data = getValue.encodeToHex("")
+  console.log(_data)
+
+  var result = web3.eth.call({
+      to: contractAddress, // contract address
+      data: _data
+  });
+
+  result.then(function(value){
+    value = web3.avm.decodeOneObjectFromHex(value);
+
+    console.log(value);
+
+    window.open(value, 'magnetframe')
+  })
 
   for (i=0;i<numLoans;i++){
       var magnet = 1;
