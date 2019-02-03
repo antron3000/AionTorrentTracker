@@ -1,15 +1,18 @@
 package avm;
 
 import org.aion.avm.api.ABIDecoder;
+import org.aion.avm.api.Address;
 import org.aion.avm.api.BlockchainRuntime;
 import org.aion.avm.userlib.AionList;
 import org.aion.avm.userlib.AionMap;
+
 import java.util.Set;
 
 public class MagnetSmartContract {
 
     private static AionMap<String, AionList<Integer>> displayNameIndexesMap = new AionMap<>();
     private static AionMap<Integer, String> indexMagnetLinkMap = new AionMap<>();
+    private static AionList<Bounty> bountyList = new AionList<>();
     private static int index = 0;
     private static double MIN_MATCH = 0.5;
 
@@ -67,9 +70,44 @@ public class MagnetSmartContract {
         return toReturn;
     }
 
+    public static void createBounty(String Name){
+        //add bounty to bounty list
+        //send Aion to the contract
+        org.aion.avm.shadow.java.math.BigInteger bountyAmount = BlockchainRuntime.avm_getValue();
+
+        //Bounty b = new Bounty(Name, bountyAmount);
+
+        bountyList.add(new Bounty(Name, bountyAmount));
+    }
+    public static void submitLink(int bountyId, String magnetLink){
+        //add submission to submission list for the bounty at bountyID
+
+        Bounty b = bountyList.get(bountyId);
+
+        b.addSubmission(new Submission(BlockchainRuntime.getCaller(), magnetLink));
+    }
+
+    public static void validateLinkAndReleaseBounty(int bountyId, int submissionId){
+        //upload magnet link to the contract's magnet link map
+        //send Aion to the person who submitted the correct magnet
+
+        Bounty b = bountyList.get(bountyId);
+        Submission s = b.submissions.get(submissionId);
+
+        upload(b.name, s.magnetLink);
+
+        // TO DO: Send bounty from Contract to submitter
+
+        bountyList.remove(bountyId);
+    }
+
     public static String getLinkByIndex(int index) {
         return indexMagnetLinkMap.get(index);
     }
+
+//    public static String[] getAllLinks() {
+//        indexMagnetLinkMap.v
+//    }
 
 
     // FOR TESTING ONLY - DOES NOT WORK
